@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACOC 회사생활</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8b6f47;
+      --primary-dark: #6b5537;
+      --accent: #a0826d;
+      --success: #6b8e6f;
+      
+      --bg-main: #f5f1ea;
+      --bg-card: #fdfbf7;
+      --bg-hover: #f9f5ef;
+      --bg-active: #f0ebe2;
+      
+      --text-primary: #2d2d2d;
+      --text-secondary: #5a5a5a;
+      --text-tertiary: #8a8a8a;
+      
+      --border: #e8e1d5;
+      --border-hover: #d4caba;
+      
+      --shadow-sm: 0 1px 3px 0 rgb(139 111 71 / 0.05);
+      --shadow-md: 0 4px 8px -1px rgb(139 111 71 / 0.08);
+      --shadow-lg: 0 10px 20px -3px rgb(139 111 71 / 0.12);
+      
+      --radius: 10px;
+      --radius-lg: 14px;
+      
+      --font-display: 'DM Sans', sans-serif;
+      --font-body: 'Noto Sans KR', sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-main);
+      color: #2d2d2d;
+      line-height: 1.8;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Header */
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid #e8e1d5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      max-width: 100%;
+      margin: 0;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    
+    .logo-acoc {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    
+    .logo-divider {
+      width: 1px;
+      height: 12px;
+      background: #ccc;
+    }
+    
+    .logo-page {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    
+    .btn {
+      padding: 0.5rem 0.875rem;
+      border: 1px solid #d9d0c5;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+      background: var(--bg-card);
+      color: #5a5a5a;
+      white-space: nowrap;
+    }
+    
+    .btn:hover {
+      background: #faf8f5;
+      border-color: #b8a898;
+      color: #2d2d2d;
+    }
+    
+    .btn-primary {
+      background: #1a1a1a;
+      color: #fff;
+      border: 1px solid #1a1a1a;
+      font-size: 13px;
+    }
+    
+    .btn-primary:hover {
+      background: #333;
+      border-color: #333;
+    }
+    
+    /* Navigation */
+    .nav {
+      background: var(--bg-card);
+      border-bottom: 1px solid #e8e1d5;
+      position: sticky;
+      top: 80px;
+      z-index: 90;
+      backdrop-filter: blur(10px);
+    }
+    
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      align-items: center;
+    }
+    
+    .nav-content::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .nav-tab {
+      font-family: var(--font-body);
+      padding: 1rem 1.5rem;
+      border: none;
+      background: none;
+      color: #5a5a5a;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      position: relative;
+    }
+    
+    .nav-tab:hover {
+      color: #2d2d2d;
+      background: #faf8f5;
+    }
+    
+    .nav-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .nav-tab .delete-tab {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.25rem;
+      background: var(--bg-active);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: var(--text-tertiary);
+    }
+    
+    .nav-tab:hover .delete-tab {
+      display: flex;
+    }
+    
+    .delete-tab:hover {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+    
+    .add-tab-btn {
+      padding: 0.75rem 1rem;
+      margin-left: 0.5rem;
+      font-size: 0.875rem;
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .add-tab-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    
+    .section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+      color: #2d2d2d;
+    }
+    
+    .page-desc {
+      font-size: 1rem;
+      color: #5a5a5a;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2.5rem;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+    
+    .hero-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+    
+    .hero-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    
+    .hero-title a:hover {
+      opacity: 0.8;
+    }
+    
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: #5a5a5a;
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-slogan {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .card.collapsed .card-body {
+      display: none;
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+    }
+    
+    /* Toggle Section */
+    .toggle-section {
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+    
+    .toggle-header {
+      padding: 1.25rem 1.75rem;
+      background: #faf8f5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      transition: all 0.2s;
+      user-select: none;
+      color: #2d2d2d;
+    }
+    
+    .toggle-header:hover {
+      background: var(--bg-active);
+    }
+    
+    .toggle-icon {
+      transition: transform 0.3s;
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+    }
+    
+    .toggle-section.open .toggle-icon {
+      transform: rotate(180deg);
+    }
+    
+    .toggle-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .toggle-section.open .toggle-content {
+      max-height: 5000px;
+    }
+    
+    .toggle-body {
+      padding: 1.75rem;
+      background: var(--bg-card);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e8e1d5;
+    }
+    
+    .card.collapsed .card-header {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+    }
+    
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #2d2d2d;
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      letter-spacing: -0.01em;
+    }
+    
+    .card-title.editable[contenteditable="true"] {
+      outline: 2px solid var(--primary);
+      outline-offset: 4px;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      background: #fef9f3;
+    }
+    
+    .card-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .collapse-btn, .delete-card-btn {
+      padding: 0.375rem;
+      font-size: 0.875rem;
+      background: #faf8f5;
+      color: #5a5a5a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .collapse-btn:hover, .delete-card-btn:hover {
+      background: var(--bg-active);
+      color: #2d2d2d;
+    }
+    
+    .delete-card-btn:hover {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+    
+    .card.collapsed .collapse-btn {
+      transform: rotate(180deg);
+    }
+    
+    .edit-btn {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.8rem;
+      background: #faf8f5;
+      color: #5a5a5a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .edit-btn:hover {
+      background: var(--bg-active);
+      border-color: var(--border-hover);
+      color: #2d2d2d;
+    }
+    
+    .card-body {
+      color: #5a5a5a;
+      line-height: 1.9;
+      min-height: 100px;
+    }
+    
+    .card-body h3 {
+      color: #2d2d2d;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.75rem 0 1rem 0;
+      letter-spacing: -0.01em;
+    }
+    
+    .card-body ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .card-body ul li {
+      padding: 0.875rem 0;
+      padding-left: 1.75rem;
+      position: relative;
+      line-height: 1.8;
+      color: #5a5a5a;
+    }
+    
+    .card-body ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0.5rem;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    
+    .card-body ol {
+      padding-left: 1.75rem;
+      counter-reset: item;
+      list-style: none;
+    }
+    
+    .card-body ol li {
+      padding: 0.875rem 0;
+      padding-left: 0.5rem;
+      position: relative;
+      line-height: 1.8;
+      color: #5a5a5a;
+      counter-increment: item;
+    }
+    
+    .card-body ol li::before {
+      content: counter(item) ".";
+      position: absolute;
+      left: -1.5rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .card-body p {
+      margin-bottom: 1rem;
+      line-height: 1.85;
+      color: #5a5a5a;
+    }
+    
+    .card-body strong {
+      color: #2d2d2d;
+      font-weight: 600;
+    }
+    
+    .card-body a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .card-body a:hover {
+      text-decoration: underline;
+      color: var(--primary-dark);
+    }
+    
+    .highlight {
+      background: #fef3e6;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+    
+    .alert-box {
+      background: #fef9f3;
+      border-left: 3px solid var(--primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius);
+      color: #2d2d2d;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    
+    .alert-box strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .editable[contenteditable="true"] {
+      outline: 2px solid var(--primary);
+      outline-offset: 4px;
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius);
+      background: #fef9f3;
+    }
+    
+    /* Formatting Toolbar */
+    .format-toolbar {
+      display: none;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .format-toolbar.active {
+      display: flex;
+    }
+    
+    .format-btn {
+      padding: 0.5rem 0.75rem;
+      background: #faf8f5;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #5a5a5a;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    
+    .format-btn:hover {
+      background: var(--bg-active);
+      color: #2d2d2d;
+    }
+    
+    .format-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .format-divider {
+      width: 1px;
+      background: var(--border);
+      margin: 0 0.25rem;
+    }
+    
+    /* Partner Table */
+    .partner-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    
+    .partner-table th,
+    .partner-table td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e8e1d5;
+    }
+    
+    .partner-table th {
+      background: #faf8f5;
+      font-weight: 600;
+      color: #2d2d2d;
+      width: 25%; font-size: 0.875rem;
+    }
+    
+    .partner-table td {
+      color: #5a5a5a;
+    }
+    
+    .partner-table tr:last-child th,
+    .partner-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .partner-table tr:hover {
+      background: #faf8f5;
+    }
+    
+    .save-controls {
+      display: none;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .save-controls.active {
+      display: flex;
+    }
+    
+    .add-card-btn {
+      padding: 0.6rem 0.75rem;
+      background: #faf8f5;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      color: #5a5a5a;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    
+    .add-card-btn:hover {
+      background: var(--bg-active);
+      border-color: var(--border-hover);
+      color: #2d2d2d;
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #2d2d2d;
+    }
+    
+    .modal-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+    }
+    
+    .modal-input:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-color: var(--primary);
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+    
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      background: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s;
+      z-index: 1000;
+      pointer-events: none;
+      font-weight: 500;
+    }
+    
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 0.6rem 0.75rem;
+      }
+      
+      .container {
+        padding: 2rem 1rem;
+      }
+      
+      .page-title {
+        font-size: 1.5rem;
+      }
+      
+      .nav {
+        top: 70px;
+      }
+      
+      .hero {
+        padding: 2rem 1.5rem;
+      }
+      
+      .hero-title {
+        font-size: 1.5rem;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-acoc">ACOC</span>
+        <div class="logo-divider"></div>
+        <span class="logo-page">회사생활</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button class="btn" onclick="undoChanges()" id="undo-btn" style="display: none;">↶ 되돌리기</button>
+        <button class="btn btn-primary" onclick="openTabModal()">+ 카테고리 추가</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-content" id="navTabs">
+      <!-- Tabs will be dynamically generated -->
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container" id="mainContent">
+    <!-- Sections will be dynamically generated -->
+  </main>
+
+  <!-- Add Tab Modal -->
+  <div class="modal" id="tabModal">
+    <div class="modal-content">
+      <h2 class="modal-title">새 카테고리 추가</h2>
+      <input type="text" class="modal-input" id="tabNameInput" placeholder="카테고리 이름 (예: 기본가이드)">
+      <input type="text" class="modal-input" id="tabIconInput" placeholder="이모지 아이콘 (예: 📖)">
+      <div class="modal-buttons">
+        <button class="btn" onclick="closeTabModal()">취소</button>
+        <button class="btn btn-primary" onclick="addNewTab()">추가</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Card Modal -->
+  <div class="modal" id="cardModal">
+    <div class="modal-content">
+      <h2 class="modal-title">새 카드 추가</h2>
+      <input type="text" class="modal-input" id="cardTitleInput" placeholder="카드 제목 (예: 인재상)">
+      <input type="text" class="modal-input" id="cardIconInput" placeholder="이모지 아이콘 (예: 💎)">
+      <div class="modal-buttons">
+        <button class="btn" onclick="closeCardModal()">취소</button>
+        <button class="btn btn-primary" onclick="addNewCard()">추가</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification"></div>
+
+  <script>
+    // Storage key
+    const STORAGE_KEY = 'acoc_handbook_data';
+    
+    // Current state
+    let currentTab = 'home';
+    let currentAddingTab = null;
+    
+    // Default data structure
+    const defaultData = {
+      tabs: [
+        {
+          id: 'home',
+          name: 'ACOC',
+          icon: '🏠',
+          isHome: true,
+          cards: [
+            {
+              id: 'company-info',
+              title: '🏢 회사 정보',
+              content: `<p><strong>사명:</strong> (주)어반스트롤</p>
+<p><strong>영문명:</strong> Urban Stroll Co., Ltd.</p>
+<p><strong>사업자등록번호:</strong> 349-86-03357</p>
+<p><strong>계좌번호:</strong> 우리은행 1005-804-604364</p>
+<p><strong>사무실 주소:</strong> 서울시 중구 동호로 11길 29 충현빌딩 201호</p>
+<p><strong>쇼룸 주소:</strong> 서울시 성동구 서울숲4길 12-22 B1 ACOC</p>`
+            },
+            {
+              id: 'acoc-crew',
+              title: '👥 ACOC CREW',
+              content: `<div style="padding: 1rem 0;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[이수빈 Soovin Lee - 대표]</p>
+  <p style="margin: 0.25rem 0;">☎ 010-3232-3903</p>
+  <p style="margin: 0.25rem 0;">✉ soobin.lee@acoc.studio</p>
+  <p style="margin: 0.25rem 0;">🚗 144거 2589</p>
+</div>
+
+<div style="padding: 1rem 0; border-top: 1px solid #e8e1d5;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[박보미 - 팀장 - 디자인&생산]</p>
+  <p style="margin: 0.25rem 0;">☎ 010-6740-0945</p>
+  <p style="margin: 0.25rem 0;">✉ bomi.park@acoc.studio</p>
+</div>
+
+<div style="padding: 1rem 0; border-top: 1px solid #e8e1d5;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[장예진 - 대리 - MD]</p>
+  <p style="margin: 0.25rem 0;">☎ 010-2218-8036</p>
+  <p style="margin: 0.25rem 0;">✉ aejin.jang@acoc.studio</p>
+</div>
+
+<div style="padding: 1rem 0; border-top: 1px solid #e8e1d5;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[강유진 Yujin Kang - Marketing Manager]</p>
+  <p style="margin: 0.25rem 0;">☎ 010-8880-2751</p>
+  <p style="margin: 0.25rem 0;">✉ yj.kang@acoc.studio</p>
+</div>
+
+<div style="padding: 1rem 0; border-top: 1px solid #e8e1d5;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[김혜빈 - Hyebin Kim - Brand Visual Designer]</p>
+  <p style="margin: 0.25rem 0;">☎ 010-6717-6638</p>
+  <p style="margin: 0.25rem 0;">✉ hb.kim@acoc.studio</p>
+</div>
+
+<div style="margin-top: 1.5rem; padding: 0.6rem 0.75rem; background: #faf8f5; border-radius: var(--radius); color: var(--text-tertiary); font-size: 0.875rem;">
+  💡 <strong>크루 추가 방법:</strong> 수정 버튼을 누르고 아래 템플릿을 복사해서 붙여넣으세요<br><br>
+  &lt;div style="padding: 1rem 0; border-bottom: 1px solid #e8e1d5;"&gt;<br>
+  &nbsp;&nbsp;&lt;p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;"&gt;[이름 - 직책]&lt;/p&gt;<br>
+  &nbsp;&nbsp;&lt;p style="margin: 0.25rem 0;"&gt;☎ 전화번호&lt;/p&gt;<br>
+  &nbsp;&nbsp;&lt;p style="margin: 0.25rem 0;"&gt;✉ 이메일&lt;/p&gt;<br>
+  &nbsp;&nbsp;&lt;p style="margin: 0.25rem 0;"&gt;🚗 차량번호 (선택)&lt;/p&gt;<br>
+  &lt;/div&gt;
+</div>`
+            }
+          ]
+        },
+        {
+          id: 'guide',
+          name: '기본가이드',
+          icon: '📖',
+          cards: [
+            {
+              id: 'values',
+              title: '💎 인재상 (아코크의 가치관)',
+              content: `<div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>1. 열린 커뮤니케이션</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <p>정확한 의사소통은 일이 원활하게 굴러가는 가장 기본적인 요소입니다. 아코크는 대표도 사원도 모두가 일터에서 만나는 동료들이며, 업무를 대하고 소통하는 과정에 있어 서로에 대한 존중이 전제되어야 합니다.</p>
+                <ul>
+                  <li>막내가 대표가 뱉은 말을 반복하는 일이 없도록, 최고 의사결정권자의 한마디가 지시가 되지 않도록, 차이를 인정하고 계속해서 질문하고 물어봐주세요.</li>
+                  <li>대표도 동료가 생각하는 정답을 가정하지 않고 오픈마인드로 질문에 질문을 더해, 상대가 말하고자 하는 본질을 이해하기 위해 노력합니다.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>2. 주인의식과 액션</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <p>주인의식은 투철한 책임감을 의미합니다.</p>
+                <ul>
+                  <li>방향이 맞는지 물어보되 다음 단계의 실행 방법을 스스로 제시하는 습관</li>
+                  <li>정답 없는 열린 질문엔 본인의 생각을 먼저 이야기하고 다른 이의 답변과 조율하는 연습</li>
+                  <li>매번 어떻게 할지 답을 듣고, 스스로 해결책을 찾기보다 답을 주는 사람에게 의존하는 것은 주인의식이라고 할 수 없습니다</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>3. 인간적인 배려</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <ul>
+                  <li>나의 하루와 컨디션, 일정, 스케줄을 투명하게 공유하고</li>
+                  <li>동료의 하루와 컨디션, 일정, 스케줄을 고려하여 대화와 소통의 타이밍을 조율해주세요</li>
+                  <li>상대에게 무언가를 요청할 때는 준비할 수 있는 충분한 시간을 주고, 협업 절차를 명확하게 제시해 주세요</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>4. 긍정적인 마인드</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <ul>
+                  <li>아코크에서는 문제를 대면할 때 긍정적이고 건설적인 접근과 태도를 유지하는 것이 중요합니다. 작은 조직에서는 대면하는 문제의 양이 절대적으로 많기 때문에 "왜 이게 안 돼?"라는 질문보다는 "이걸 어떻게 쉽게 바꿔볼까?"라는 질문이 개인의 스트레스를 줄이고, 효율적으로 일할 수 있는 방법입니다.</li>
+                  <li>몸과 마음이 고생스러운 순간들에 위트로 동료들에게 긍정적인 기운을 전파하는 팀원이 되어주세요. 내가 보낸 정서적 격려와 업무적 지지는 반드시 5년 안에 매우 실질적인(예:협업 또는 스카우트…) 형태로 돌아옵니다.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>5. 규율과 자율</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <p>아코크는 향후 자율 출근, 재택 근무 확대를 목표로 하고 있습니다. 자율적인 문화를 위해서는 아주 작은 약속이라도 철저하게 지키기 위해 함께 노력해야 합니다. 출근 약속시간, 점심시간 이후 업무 복귀시간, 회의시간 3~5분 전에는 착석해 모든 업무 준비를 마치는 프로페셔널한 모습으로 스스로의 원칙과 규칙을 세워 일할 수 있는 자율적인 문화를 만들어 갑시다.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-section open">
+            <div class="toggle-header" onclick="toggleSection(this)">
+              <span><strong>별첨) 누적되는 일</strong></span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="toggle-content">
+              <div class="toggle-body">
+                <p style="margin-bottom: 1rem;">저의 쥬니어시절 커리어를 대하는 마음가짐에 도움이 되었던 글입니다. 10년 넘게 간직하며 읽고 또 읽어온 글인데, 대표가 되어 공유하려니 꼰대스러워 주춤하게 되네요. 줍줍하는 누군가에게는 저에게 그랬듯 좋은 의미가 되길 바라며 공유합니다.</p>
+                <p><span class="highlight">"내가 하는 이 일이 전통이 될 것이다"</span></p>
+                <p style="font-size: 0.875rem; color: var(--text-tertiary); margin-top: 0.5rem;">- 홍보대행사 프레인의 여준영 회장</p>
+              </div>
+            </div>
+          </div>`
+            },
+            {
+              id: 'ground',
+              title: '📋 그라운드룰',
+              content: `<h3>공통 규칙</h3>
+          <ul>
+            <li>데일리 업무 및 미팅 동선 슬랙 '일정공유'에 공유</li>
+            <li>연차 공유 : 부서장에게 1차 상의 후 노션 '일정공유'에 기록</li>
+            <li>외부 미팅 및 외근 후 퇴근 전 결과와 주요 이슈 간단 공유</li>
+            <li>시간엄수 : 업무 시작 시간 지나기 전에 이카운트 출근체크, 미팅 최소 3분 전 착석</li>
+            <li>휴일 근무 : 최소 1일 전 사전 보고와 승인이 이루어진 경우, 근무일만큼의 대휴 발생</li>
+            <li>쇼룸 국경일 근무 : 근무일 준수 후 대휴 발생</li>
+            <li>비품 구매 : 매주 쇼룸/약수 각각 취합해 쿠팡 장바구니 담고, 목록과 주소지 전달</li>
+          </ul>
+          
+          <h3>약수 오피스</h3>
+          <ul>
+            <li>월, 금 퇴근 전 10분 단체 청소</li>
+          </ul>
+          
+          <h3>쇼룸</h3>
+          <ul>
+            <li>행거 위, 탈의실 내부 먼지 안 보이도록 매일 오픈 전 청소</li>
+            <li>분기 1회 내부 정비 리스트업 (수도, 전열, 에어컨 등)</li>
+            <li>진열 상태 수시 점검 (가격택, 매듭, 충전재 등)</li>
+            <li>입었던 유니폼, 하던 작업 등은 모두 정리 완료 후 퇴근</li>
+          </ul>`
+            },
+            {
+              id: 'systems',
+              title: '⚙️ 업무 시스템',
+              content: `<p><strong>ERP/출결관리 :</strong> 이카운트 <a href="https://login.ecount.com/Login/" target="_blank">https://login.ecount.com/Login/</a></p>
+          <p><strong>업무메신저 :</strong> 슬랙 <a href="http://theacoc.slack.com" target="_blank">theacoc.slack.com</a></p>
+          <p><strong>프로젝트&참고자료 :</strong> 노션</p>
+          <p><strong>파일관리 :</strong> 구글드라이브 <a href="https://drive.google.com/drive/u/0/folders/1kUtqBf3J5yqwm2zaL7ws_p_-cgNt8nE2" target="_blank">링크</a></p>
+          <p><strong>자사몰 :</strong> 카페24</p>
+          <p><strong>쇼룸 결제 :</strong> 페이히어</p>
+          <p><strong>온라인 주문통합, 상품등록 :</strong> 사방넷</p>`
+            },
+            {
+              id: 'accounts',
+              title: '🔑 계정 정보',
+              content: `<p>모든 계정 정보는 다음 구글 스프레드시트에서 관리됩니다.</p>
+          <p><a href="https://docs.google.com/spreadsheets/d/1uivdS-ft1L4rLlNRreMn563OoGz10Ll-gtIpt0WzCGk/edit?gid=0#gid=0" target="_blank">📊 계정 정보 시트 열기</a></p>`
+            },
+            {
+              id: 'partners',
+              title: '🤝 거래처 정보',
+              content: `<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>뉴월드</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>뉴월드 / 01074116416 / 서울 광진구 중곡동 24-29 지하 1층</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>가온</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>01087309732 / 서울특별시 중랑구 면목동 156-1</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>물류 (행복전달연구소)</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-6894-0129 / 경기도 파주시 신촌동 43-19</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>리라이</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>정석만 / 010-9174-1412 / 서울시 강서구 화곡동 799-10 1층</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>부산 아난티</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-4664-5633 / 부산광역시 기장군 기장읍 기장해안로 268-32</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>성수 쎈느</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>이수현 / 010-7721-1081 / 서울 성동구 연무장5길 20 2층</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>도조 서울</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-5738-0346 / 서울 용산구 한남대로27가길 23 202호 / 서동욱 점장님 앞</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>다나야드</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-8635-8679 / 서울시 송파구 백제고분로 175 해큐파빌딩 3층 슬로크 주식회사</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>피어 목동</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>최현선 / 01090327098 / 서울 양천구 목동동로 257 현대하이페리온 B2</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>피어 킨텍스</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>하준호 / 01086221779 / 경기 고양시 일산서구 대화동 2602</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>용산 아이파크몰 루트</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>서유진 / 010-9943-6927 / 서울 용산구 한강대로23길 55</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>바인드 물류센터</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>엄기용 / 010-5002-1086 / 경기도 화성시 장지동 212-1</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>피어 중동</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>임익창 / 010-8981-9460 / 경기 부천시 원미구 길주로 180 B1F</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>크림 잠실</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>염요섭 / 010-9643-1641 / 서울 송파구 올림픽로 300</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>성수 센느</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>이수현 / 010-7721-1081 / 서울 성동구 연무청길 20 2층</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>황지호 (혜인간판)</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-9524-5345</td>
+  </tr>
+</table>
+
+<table class="partner-table">
+  <tr>
+    <th>거래처명</th>
+    <td>곰방양중업체</td>
+  </tr>
+  <tr>
+    <th>연락처 / 주소</th>
+    <td>010-9627-0996</td>
+  </tr>
+</table>`
+            },
+            {
+              id: 'product',
+              title: '🏷️ 상품코드',
+              content: `<p><strong>코드 구조:</strong> 시즌(1자리) + 연도(2자리) + 카테고리(2자리) + 순번(3자리) + 컬러(2자리)</p>
+          <p><strong>예시:</strong> 323BG601BK</p>
+          <ul>
+            <li>3 = 시즌</li>
+            <li>23 = 2023년</li>
+            <li>BG = 카테고리 (백팩)</li>
+            <li>601 = 순번</li>
+            <li>BK = 블랙</li>
+          </ul>`
+            }
+          ]
+        },
+        {
+          id: 'policy',
+          name: '사내정책',
+          icon: '📌',
+          cards: [
+            {
+              id: 'vacation',
+              title: '🚗 휴가정책',
+              content: `<div class="alert-box">
+            <strong>❗ 중요</strong>
+            외근/연차 공유 : 부서장에게 1차 상의 후 노션 '일정공유'에 게시
+          </div>
+          <p><strong>사용 일정 :</strong> 연 내</p>`
+            },
+            {
+              id: 'welfare',
+              title: '☕ 복지정책',
+              content: `<h3>직원할인</h3>
+          
+          <p><strong>할인율</strong></p>
+          <ul>
+            <li>직원할인 70% 코드 : ONLYCREW70 (정가 기준 월 30만원 이내)</li>
+            
+            <li>지인할인 30% 코드 : PARTNERS30 (인당 제품 1개, 총 월 3개) 수령자명에 직원명 기재 (예: 이수빈(보미지인))</li>
+          </ul>
+          
+          <p><strong>이용방법 및 주의사항</strong></p>
+          <ul>
+            <li>공홈 회원 가입 후 결제화면에서 코드 기재</li>
+            
+            <li>할당 금액 내 자유롭게 결제 가능 (본인 이용, 선물 구매 등)</li>
+            
+            <li>20% 이상 할인 상품은 사용 제외</li>
+            
+            <li>(이런 일 없겠지만!) 중고 거래 등 부정 사용 적발 시 정가 변상</li>
+          </ul>
+          
+          <h3>생일적립금</h3>
+          <ul>
+            <li>10만원 지급 (직원 할인 코드 사용 가능, 할당금액 초과 사용 가능)</li>
+            
+            <li>사용 기한 : 발급 후 3개월 이내, 재직 기간 내 사용 가능</li>
+          </ul>`
+            },
+            {
+              id: 'expense',
+              title: '💸 경비규정',
+              content: `<h3>개인 사용 비용 청구</h3>
+          <ol>
+            <li>사용 전 1차상사/대표에게 공유</li>
+            
+            <li>사용 후 증빙 보관</li>
+            
+            <li>월말 현금지출양식 일리택스 사이트에 업로드 (엑셀파일 + 영수증사진/캡쳐본)</li>
+            
+            <li>총금액 구글시트 기재</li>
+            
+            <li>급여일 (익월 10일) 입금 진행</li>
+          </ol>
+          
+          <p><strong>일리택스 사이트:</strong> <a href="https://12tax12.kr/bbs/board.php?bo_table=customer_fboard&no_=5" target="_blank">링크</a></p>
+          <p><strong>서브계정:</strong> 3498603357_2 / 비번: u34986</p>
+          
+          <h3>주차비/유류비</h3>
+          <ul>
+            <li>업무상 필요로 차량 운행 시 유류비 주차비 지급</li>
+            
+            <li>본래근무지~목적지까지의 유류비 지급 (일자/출발지/도착지/연비 기록)</li>
+            
+            <li>개인카드로 결제한 유류비가 아닌 주행내역 계산에 따른 총금액 지급</li>
+          </ul>
+          
+          <h3>택시비</h3>
+          <ul>
+            <li><strong>업무택시비 :</strong> 업무상의 이유로 탑승 시 법인카드 결제 또는 개인지출 후 월말 증빙 처리</li>
+            
+            <li><strong>야근택시비 :</strong> 23시 30분 이후 퇴근 시 법인카드로 결제 또는 개인지출 후 월말 증빙 처리</li>
+          </ul>
+          
+          <h3>야근식비</h3>
+          <ul>
+            <li>20시 30분 이후 퇴근 예상 시 법인카드로 1만원 이내 석식 결제</li>
+          </ul>`
+            }
+          ]
+        }
+      ]
+    };
+    
+    // Initialize
+    const HISTORY_KEY = 'acoc_handbook_history';
+    const MAX_HISTORY = 10;
+    let appData = loadData();
+    let history = loadHistory();
+    
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        
+        // Auto-restore ACOC CREW if missing
+        const homeTab = data.tabs.find(t => t.isHome);
+        if (homeTab) {
+          const hasCompanyInfo = homeTab.cards.some(c => c.id === 'company-info');
+          const hasAcocCrew = homeTab.cards.some(c => c.id === 'acoc-crew');
+          
+          // Add missing cards from defaultData
+          const defaultHome = defaultData.tabs.find(t => t.isHome);
+          if (!hasCompanyInfo) {
+            const companyCard = defaultHome.cards.find(c => c.id === 'company-info');
+            if (companyCard) homeTab.cards.unshift(companyCard);
+          }
+          if (!hasAcocCrew) {
+            const crewCard = defaultHome.cards.find(c => c.id === 'acoc-crew');
+            if (crewCard) {
+              const insertIndex = hasCompanyInfo ? 1 : 0;
+              homeTab.cards.splice(insertIndex, 0, crewCard);
+            }
+          }
+        }
+        
+        return data;
+      }
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+    
+    function resetToDefault() {
+      if (confirm('⚠️ 모든 데이터가 초기 상태로 리셋됩니다. 계속하시겠습니까?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(HISTORY_KEY);
+        history = [];
+        appData = JSON.parse(JSON.stringify(defaultData));
+        renderAll();
+        showNotification('🔄 초기 상태로 리셋되었습니다');
+      }
+    }
+    
+    function loadHistory() {
+      const saved = localStorage.getItem(HISTORY_KEY);
+      return saved ? JSON.parse(saved) : [];
+    }
+    
+    function saveToHistory() {
+      const currentState = JSON.parse(JSON.stringify(appData));
+      history.push(currentState);
+      
+      if (history.length > MAX_HISTORY) {
+        history.shift();
+      }
+      
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      updateUndoButton();
+    }
+    
+    function undoChanges() {
+      if (history.length === 0) {
+        showNotification('⚠️ 되돌릴 내역이 없습니다');
+        return;
+      }
+      
+      const previousState = history.pop();
+      appData = previousState;
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      
+      renderAll();
+      updateUndoButton();
+      showNotification('↶ 이전 상태로 되돌렸습니다');
+    }
+    
+    function updateUndoButton() {
+      const undoBtn = document.getElementById('undo-btn');
+      if (undoBtn) {
+        undoBtn.style.display = history.length > 0 ? 'block' : 'none';
+      }
+    }
+    
+    function saveData() {
+      saveToHistory();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    }
+    
+    function renderAll() {
+      renderTabs();
+      renderSections();
+      switchTab(currentTab);
+      updateUndoButton();
+    }
+    
+    function renderTabs() {
+      const navTabs = document.getElementById('navTabs');
+      navTabs.innerHTML = '';
+      
+      appData.tabs.forEach(tab => {
+        const button = document.createElement('button');
+        button.className = 'nav-tab' + (currentTab === tab.id ? ' active' : '');
+        button.onclick = () => switchTab(tab.id);
+        
+        const text = document.createTextNode(`${tab.icon} ${tab.name}`);
+        button.appendChild(text);
+        
+        if (!tab.isHome) {
+          const deleteBtn = document.createElement('span');
+          deleteBtn.className = 'delete-tab';
+          deleteBtn.textContent = '×';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            deleteTab(tab.id);
+          };
+          button.appendChild(deleteBtn);
+        }
+        
+        navTabs.appendChild(button);
+      });
+    }
+    
+    function renderSections() {
+      const mainContent = document.getElementById('mainContent');
+      mainContent.innerHTML = '';
+      
+      appData.tabs.forEach(tab => {
+        const section = document.createElement('section');
+        section.id = 'section-' + tab.id;
+        section.className = 'section';
+        
+        if (tab.isHome) {
+          let cardsHTML = '';
+          
+          tab.cards.forEach(card => {
+            // Determine which template buttons to show based on card ID
+            let templateButtons = '';
+            if (card.id === 'acoc-crew') {
+              templateButtons = '<button class="format-btn" onclick="insertCrewTemplate()" title="크루 템플릿 추가">👤+</button>';
+            } else if (card.id === 'partners') {
+              templateButtons = '<button class="format-btn" onclick="insertPartnerTemplate()" title="거래처 템플릿 추가">🏢+</button>';
+            }
+            
+            cardsHTML += `
+              <div class="card" id="card-${card.id}">
+                <div class="card-header">
+                  <div class="card-header-left">
+                    <h2 class="card-title editable" id="title-${card.id}">${card.title}</h2>
+                  </div>
+                  <div class="card-controls">
+                    <button class="collapse-btn" onclick="toggleCard('${card.id}')">▼</button>
+                    <button class="delete-card-btn" onclick="deleteCard('${tab.id}', '${card.id}')">×</button>
+                    <button class="edit-btn" onclick="toggleEdit('${card.id}')">수정</button>
+                  </div>
+                </div>
+                <div class="format-toolbar" id="toolbar-${card.id}">
+                  <button class="format-btn" onclick="formatText('bold')" title="굵게"><strong>B</strong></button>
+                  <button class="format-btn" onclick="formatText('italic')" title="기울임"><em>I</em></button>
+                  <button class="format-btn" onclick="formatText('underline')" title="밑줄"><u>U</u></button>
+                  <button class="format-btn" onclick="formatText('strikeThrough')" title="취소선"><s>S</s></button>
+                  <div class="format-divider"></div>
+                  <button class="format-btn" onclick="formatText('fontSize', '3')" title="큰 글자">A+</button>
+                  <button class="format-btn" onclick="formatText('fontSize', '2')" title="작은 글자">A-</button>
+                  <div class="format-divider"></div>
+                  <button class="format-btn" onclick="formatText('foreColor', '#8b6f47')" title="갈색" style="color: #8b6f47;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#d9534f')" title="빨강" style="color: #d9534f;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#5cb85c')" title="초록" style="color: #5cb85c;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#000000')" title="검정" style="color: #000000;">●</button>
+                  ${templateButtons ? '<div class="format-divider"></div>' + templateButtons : ''}
+                </div>
+                <div class="card-body editable" id="content-${card.id}">${card.content}</div>
+                <div class="save-controls" id="save-${card.id}">
+                  <button class="btn btn-primary" onclick="saveCard('${tab.id}', '${card.id}')">💾 저장</button>
+                  <button class="btn" onclick="cancelEdit('${card.id}')">취소</button>
+                </div>
+              </div>
+            `;
+          });
+          
+          section.innerHTML = `
+            <div class="hero">
+              <div class="hero-icon">🤍</div>
+              <h1 class="hero-title"><a href="https://acocstudio.com/" target="_blank">ACOC</a></h1>
+              <p class="hero-desc">
+                아코크는 2019년 서울에서 시작된 도시산책자를 위한 라이프 스타일 브랜드입니다.<br>
+                가벼운 패브릭백을 메인컬렉션으로 전개하며, 익숙한 일상에 감싸듯 다양한 아이템을 제안합니다.
+              </p>
+              <p class="hero-slogan">
+                A cup of coffee in one hand, and ACOC in the other
+              </p>
+            </div>
+            ${cardsHTML}
+            <div class="add-card-btn" onclick="openCardModal('${tab.id}')">+ 새 카드 추가</div>
+          `;
+        } else {
+          let cardsHTML = '';
+          
+          tab.cards.forEach(card => {
+            // Determine which template buttons to show based on card ID
+            let templateButtons = '';
+            if (card.id === 'acoc-crew') {
+              templateButtons = '<button class="format-btn" onclick="insertCrewTemplate()" title="크루 템플릿 추가">👤+</button>';
+            } else if (card.id === 'partners') {
+              templateButtons = '<button class="format-btn" onclick="insertPartnerTemplate()" title="거래처 템플릿 추가">🏢+</button>';
+            }
+            
+            cardsHTML += `
+              <div class="card" id="card-${card.id}">
+                <div class="card-header">
+                  <div class="card-header-left">
+                    <h2 class="card-title editable" id="title-${card.id}">${card.title}</h2>
+                  </div>
+                  <div class="card-controls">
+                    <button class="collapse-btn" onclick="toggleCard('${card.id}')">▼</button>
+                    <button class="delete-card-btn" onclick="deleteCard('${tab.id}', '${card.id}')">×</button>
+                    <button class="edit-btn" onclick="toggleEdit('${card.id}')">수정</button>
+                  </div>
+                </div>
+                <div class="format-toolbar" id="toolbar-${card.id}">
+                  <button class="format-btn" onclick="formatText('bold')" title="굵게"><strong>B</strong></button>
+                  <button class="format-btn" onclick="formatText('italic')" title="기울임"><em>I</em></button>
+                  <button class="format-btn" onclick="formatText('underline')" title="밑줄"><u>U</u></button>
+                  <button class="format-btn" onclick="formatText('strikeThrough')" title="취소선"><s>S</s></button>
+                  <div class="format-divider"></div>
+                  <button class="format-btn" onclick="formatText('fontSize', '3')" title="큰 글자">A+</button>
+                  <button class="format-btn" onclick="formatText('fontSize', '2')" title="작은 글자">A-</button>
+                  <div class="format-divider"></div>
+                  <button class="format-btn" onclick="formatText('foreColor', '#8b6f47')" title="갈색" style="color: #8b6f47;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#d9534f')" title="빨강" style="color: #d9534f;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#5cb85c')" title="초록" style="color: #5cb85c;">●</button>
+                  <button class="format-btn" onclick="formatText('foreColor', '#000000')" title="검정" style="color: #000000;">●</button>
+                  ${templateButtons ? '<div class="format-divider"></div>' + templateButtons : ''}
+                </div>
+                <div class="card-body editable" id="content-${card.id}">${card.content}</div>
+                <div class="save-controls" id="save-${card.id}">
+                  <button class="btn btn-primary" onclick="saveCard('${tab.id}', '${card.id}')">💾 저장</button>
+                  <button class="btn" onclick="cancelEdit('${card.id}')">취소</button>
+                </div>
+              </div>
+            `;
+          });
+          
+          section.innerHTML = `
+            <h1 class="page-title">${tab.icon} ${tab.name}</h1>
+            <p class="page-desc">${tab.name} 정보입니다.</p>
+            ${cardsHTML}
+            <div class="add-card-btn" onclick="openCardModal('${tab.id}')">+ 새 카드 추가</div>
+          `;
+        }
+        
+        mainContent.appendChild(section);
+      });
+    }
+    
+    function switchTab(tabId) {
+      currentTab = tabId;
+      
+      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      
+      const activeTab = Array.from(document.querySelectorAll('.nav-tab')).find(tab => {
+        return tab.textContent.includes(appData.tabs.find(t => t.id === tabId)?.name || '');
+      });
+      if (activeTab) activeTab.classList.add('active');
+      
+      const activeSection = document.getElementById('section-' + tabId);
+      if (activeSection) activeSection.classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function openTabModal() {
+      document.getElementById('tabModal').classList.add('active');
+      document.getElementById('tabNameInput').value = '';
+      document.getElementById('tabIconInput').value = '';
+      document.getElementById('tabNameInput').focus();
+    }
+    
+    function closeTabModal() {
+      document.getElementById('tabModal').classList.remove('active');
+    }
+    
+    function addNewTab() {
+      const name = document.getElementById('tabNameInput').value.trim();
+      const icon = document.getElementById('tabIconInput').value.trim() || '📄';
+      
+      if (!name) {
+        alert('카테고리 이름을 입력해주세요.');
+        return;
+      }
+      
+      const newTab = {
+        id: 'tab-' + Date.now(),
+        name: name,
+        icon: icon,
+        cards: []
+      };
+      
+      appData.tabs.push(newTab);
+      saveData();
+      renderAll();
+      switchTab(newTab.id);
+      closeTabModal();
+      showNotification('✅ 카테고리가 추가되었습니다');
+    }
+    
+    function deleteTab(tabId) {
+      if (!confirm('이 카테고리를 삭제하시겠습니까?')) return;
+      
+      appData.tabs = appData.tabs.filter(tab => tab.id !== tabId);
+      saveData();
+      
+      if (currentTab === tabId) {
+        currentTab = 'home';
+      }
+      
+      renderAll();
+      showNotification('🗑️ 카테고리가 삭제되었습니다');
+    }
+    
+    function openCardModal(tabId) {
+      currentAddingTab = tabId;
+      document.getElementById('cardModal').classList.add('active');
+      document.getElementById('cardTitleInput').value = '';
+      document.getElementById('cardIconInput').value = '';
+      document.getElementById('cardTitleInput').focus();
+    }
+    
+    function closeCardModal() {
+      document.getElementById('cardModal').classList.remove('active');
+      currentAddingTab = null;
+    }
+    
+    function addNewCard() {
+      const title = document.getElementById('cardTitleInput').value.trim();
+      const icon = document.getElementById('cardIconInput').value.trim();
+      
+      if (!title) {
+        alert('카드 제목을 입력해주세요.');
+        return;
+      }
+      
+      const fullTitle = icon ? `${icon} ${title}` : title;
+      
+      const newCard = {
+        id: 'card-' + Date.now(),
+        title: fullTitle,
+        content: '<p>여기에 내용을 입력하세요...</p>'
+      };
+      
+      const tab = appData.tabs.find(t => t.id === currentAddingTab);
+      if (tab) {
+        tab.cards.push(newCard);
+        saveData();
+        renderAll();
+        switchTab(currentAddingTab);
+        closeCardModal();
+        showNotification('✅ 카드가 추가되었습니다');
+      }
+    }
+    
+    function deleteCard(tabId, cardId) {
+      if (!confirm('이 카드를 삭제하시겠습니까?')) return;
+      
+      const tab = appData.tabs.find(t => t.id === tabId);
+      if (tab) {
+        tab.cards = tab.cards.filter(card => card.id !== cardId);
+        saveData();
+        renderAll();
+        switchTab(tabId);
+        showNotification('🗑️ 카드가 삭제되었습니다');
+      }
+    }
+    
+    function toggleCard(cardId) {
+      const card = document.getElementById('card-' + cardId);
+      if (card) {
+        card.classList.toggle('collapsed');
+      }
+    }
+    
+    function toggleSection(header) {
+      header.parentElement.classList.toggle('open');
+    }
+    
+    function toggleEdit(cardId) {
+      const content = document.getElementById('content-' + cardId);
+      const title = document.getElementById('title-' + cardId);
+      const saveControls = document.getElementById('save-' + cardId);
+      const toolbar = document.getElementById('toolbar-' + cardId);
+      const isEditing = content.getAttribute('contenteditable') === 'true';
+      
+      if (isEditing) {
+        content.setAttribute('contenteditable', 'false');
+        title.setAttribute('contenteditable', 'false');
+        saveControls.classList.remove('active');
+        if (toolbar) toolbar.classList.remove('active');
+      } else {
+        content.setAttribute('contenteditable', 'true');
+        title.setAttribute('contenteditable', 'true');
+        saveControls.classList.add('active');
+        if (toolbar) toolbar.classList.add('active');
+        content.focus();
+      }
+    }
+    
+    function formatText(command, value = null) {
+      document.execCommand(command, false, value);
+    }
+    
+    function insertCrewTemplate() {
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      
+      // Find the contenteditable parent
+      let editableElement = container.nodeType === 3 ? container.parentElement : container;
+      while (editableElement && !editableElement.hasAttribute('contenteditable')) {
+        editableElement = editableElement.parentElement;
+      }
+      
+      if (editableElement) {
+        // Move cursor to end
+        const newRange = document.createRange();
+        newRange.selectNodeContents(editableElement);
+        newRange.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+      }
+      
+      const template = `
+<div style="padding: 1rem 0; border-top: 1px solid #e8e1d5;">
+  <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">[이름 - 직책]</p>
+  <p style="margin: 0.25rem 0;">☎ 전화번호</p>
+  <p style="margin: 0.25rem 0;">✉ 이메일</p>
+  <p style="margin: 0.25rem 0;">🚗 차량번호 (선택사항)</p>
+</div>
+`;
+      document.execCommand('insertHTML', false, template);
+      showNotification('👤 크루 템플릿이 하단에 추가되었습니다');
+    }
+    
+    function insertPartnerTemplate() {
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      
+      // Find the contenteditable parent
+      let editableElement = container.nodeType === 3 ? container.parentElement : container;
+      while (editableElement && !editableElement.hasAttribute('contenteditable')) {
+        editableElement = editableElement.parentElement;
+      }
+      
+      if (editableElement) {
+        // Move cursor to end
+        const newRange = document.createRange();
+        newRange.selectNodeContents(editableElement);
+        newRange.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+      }
+      
+      const template = `
+<table class="partner-table" style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+  <tr>
+    <th style="padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #e8e1d5; background: #faf8f5; font-weight: 600; color: #2d2d2d; width: 25%; font-size: 0.875rem;">거래처명</th>
+    <td style="padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #e8e1d5; color: #5a5a5a;">거래처 이름</td>
+  </tr>
+  <tr>
+    <th style="padding: 0.6rem 0.75rem; text-align: left; background: #faf8f5; font-weight: 600; color: #2d2d2d; font-size: 0.875rem;">연락처 / 주소</th>
+    <td style="padding: 0.6rem 0.75rem; text-align: left; color: #5a5a5a;">전화번호 / 주소</td>
+  </tr>
+</table>
+`;
+      document.execCommand('insertHTML', false, template);
+      showNotification('🏢 거래처 템플릿이 하단에 추가되었습니다');
+    }
+    
+    function saveCard(tabId, cardId) {
+      const content = document.getElementById('content-' + cardId);
+      const title = document.getElementById('title-' + cardId);
+      
+      const tab = appData.tabs.find(t => t.id === tabId);
+      if (tab) {
+        const card = tab.cards.find(c => c.id === cardId);
+        if (card) {
+          card.content = content.innerHTML;
+          card.title = title.textContent;
+          saveData();
+        }
+      }
+      
+      content.setAttribute('contenteditable', 'false');
+      title.setAttribute('contenteditable', 'false');
+      document.getElementById('save-' + cardId).classList.remove('active');
+      
+      showNotification('✅ 저장되었습니다');
+    }
+    
+    function cancelEdit(cardId) {
+      const tab = appData.tabs.find(t => t.cards.some(c => c.id === cardId));
+      if (tab) {
+        const card = tab.cards.find(c => c.id === cardId);
+        if (card) {
+          document.getElementById('content-' + cardId).innerHTML = card.content;
+          document.getElementById('title-' + cardId).textContent = card.title;
+        }
+      }
+      
+      document.getElementById('content-' + cardId).setAttribute('contenteditable', 'false');
+      document.getElementById('title-' + cardId).setAttribute('contenteditable', 'false');
+      document.getElementById('save-' + cardId).classList.remove('active');
+    }
+    
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+      setTimeout(() => notification.classList.remove('show'), 2000);
+    }
+    
+    // Initialize on load
+    renderAll();
+  </script>
+</body>
+</html>
