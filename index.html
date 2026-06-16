@@ -6,7 +6,7 @@
 <title>ACOC Company Info</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f7f6f3;--surface:#fff;--surface2:#f2f0ec;--border:#e3e0db;--border2:#ccc9c3;--text:#1a1917;--text2:#6b6860;--text3:#a09d98;--green-bg:#eaf3de;--green-text:#3b6d11;--green-border:#c0dd97;--amber-bg:#faeeda;--amber-text:#854f0b;--red-bg:#fcebeb;--red-text:#a32d2d;--blue-bg:#e6f1fb;--blue-text:#185fa5;--radius:10px;--radius-sm:6px;--radius-xs:4px;}
+:root{--bg:#f7f6f3;--surface:#fff;--surface2:#f2f0ec;--border:#e3e0db;--border2:#ccc9c3;--text:#1a1917;--text2:#6b6860;--text3:#a09d98;--green-bg:#eaf3de;--green-text:#3b6d11;--green-border:#c0dd97;--amber-bg:#faeeda;--amber-text:#854f0b;--red-bg:#fcebeb;--red-text:#a32d2d;--radius:10px;--radius-sm:6px;--radius-xs:4px;}
 body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;font-size:14px;line-height:1.5;padding:1.5rem;min-height:100vh}
 .app{max-width:1100px;margin:0 auto}
 .brand{font-size:11px;font-weight:700;letter-spacing:0.18em;color:var(--text3);margin-bottom:1.25rem}
@@ -22,7 +22,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','M
 .btn-danger{background:var(--red-bg);color:var(--red-text);border:1px solid #f7c1c1}.btn-danger:hover{background:#f7c1c1}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.card-title{font-size:14px;font-weight:700;color:var(--text)}
+.card-title{font-size:14px;font-weight:700}
 .form-group{margin-bottom:1rem}
 .form-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;display:block}
 .form-input{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-size:13px;background:var(--surface);color:var(--text);font-family:inherit}
@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','M
 .db-table th{text-align:left;padding:9px 12px;color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;background:var(--surface2);border-bottom:1px solid var(--border)}
 .db-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .db-table tr:last-child td{border-bottom:none}
-.db-table tbody tr:hover td{background:var(--surface2)}
+.db-table tbody tr.data-row:hover td{background:var(--surface2);cursor:pointer}
 .empty{text-align:center;padding:3rem;color:var(--text3);font-size:13px}
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
 .search-input{border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 12px;font-size:13px;background:var(--surface);color:var(--text);font-family:inherit;min-width:200px}
@@ -55,8 +55,8 @@ textarea.form-input{resize:vertical;min-height:80px}
 <div class="app">
   <div class="brand">&#127968; ACOC COMPANY INFO</div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('list',this)">&#128203; 회사 목록</button>
-    <button class="tab-btn" onclick="showTab('add',this)">&#10133; 회사 등록</button>
+    <button class="tab-btn active" id="tabListBtn" onclick="showTab('list')">&#128203; 회사 목록</button>
+    <button class="tab-btn" id="tabAddBtn" onclick="showTab('add')">&#10133; 회사 등록</button>
   </div>
   <div id="tab-list">
     <div class="toolbar">
@@ -65,7 +65,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       <span id="countBadge" style="font-size:12px;color:var(--text3)"></span>
     </div>
     <div class="db-wrap">
-      <table class="db-table">
+      <table class="db-table" id="mainTable">
         <thead><tr><th>회사명</th><th>브랜드명</th><th>담당자</th><th>연락처</th><th>이메일</th><th>카테고리</th><th>상태</th><th>관리</th></tr></thead>
         <tbody id="companyList"><tr><td colspan="8" class="empty">로딩 중...</td></tr></tbody>
       </table>
@@ -75,7 +75,7 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div class="card">
       <div class="card-header">
         <div class="card-title" id="formTitle">새 회사 등록</div>
-        <button class="btn btn-ghost btn-sm" onclick="resetForm()" id="cancelEditBtn" style="display:none">&#10005; 취소</button>
+        <button class="btn btn-ghost btn-sm" onclick="cancelEdit()" id="cancelEditBtn" style="display:none">&#10005; 취소</button>
       </div>
       <input type="hidden" id="editId">
       <div class="form-row">
@@ -84,7 +84,12 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">사업자등록번호</label><input type="text" class="form-input" id="bizNumber" placeholder="000-00-00000"></div>
-        <div class="form-group"><label class="form-label">카테고리</label><select class="form-input" id="category"><option value="">선택</option><option value="패션">패션</option><option value="뷰티">뷰티</option><option value="식품">식품</option><option value="생활용품">생활용품</option><option value="전자제품">전자제품</option><option value="기타">기타</option></select></div>
+        <div class="form-group"><label class="form-label">카테고리</label>
+          <select class="form-input" id="category">
+            <option value="">선택</option><option value="패션">패션</option><option value="뷰티">뷰티</option>
+            <option value="식품">식품</option><option value="생활용품">생활용품</option><option value="전자제품">전자제품</option><option value="기타">기타</option>
+          </select>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">담당자명</label><input type="text" class="form-input" id="contactName" placeholder="담당자 이름"></div>
@@ -99,7 +104,11 @@ textarea.form-input{resize:vertical;min-height:80px}
         <div class="form-group"><label class="form-label">홈페이지</label><input type="text" class="form-input" id="website" placeholder="https://example.com"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">거래 상태</label><select class="form-input" id="status"><option value="활성">활성</option><option value="협의중">협의중</option><option value="휴면">휴면</option><option value="종료">종료</option></select></div>
+        <div class="form-group"><label class="form-label">거래 상태</label>
+          <select class="form-input" id="status">
+            <option value="활성">활성</option><option value="협의중">협의중</option><option value="휴면">휴면</option><option value="종료">종료</option>
+          </select>
+        </div>
         <div class="form-group"><label class="form-label">거래 시작일</label><input type="date" class="form-input" id="startDate"></div>
       </div>
       <div class="form-group"><label class="form-label">메모</label><textarea class="form-input" id="memo" placeholder="특이사항, 계약내용 등"></textarea></div>
@@ -137,24 +146,27 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 let allData = [];
 let currentEditId = null;
-function statusBadge(s){
-  var sc = {활성:"badge-green",협의중:"badge-amber",휴면:"badge-gray",종료:"badge-red"};
+
+function statusBadge(s) {
+  const sc = {활성:"badge-green",협의중:"badge-amber",휴면:"badge-gray",종료:"badge-red"};
   return '<span class="badge ' + (sc[s]||"badge-gray") + '">' + (s||"-") + "</span>";
 }
-window.showTab = function(tab, btn) {
-  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
-  if(btn) btn.classList.add("active");
-  document.getElementById("tab-list").classList.toggle("hidden", tab !== "list");
-  document.getElementById("tab-add").classList.toggle("hidden", tab !== "add");
+
+window.showTab = function(tab) {
+  document.getElementById("tabListBtn").classList.toggle("active", tab==="list");
+  document.getElementById("tabAddBtn").classList.toggle("active", tab==="add");
+  document.getElementById("tab-list").classList.toggle("hidden", tab!=="list");
+  document.getElementById("tab-add").classList.toggle("hidden", tab!=="add");
 };
+
 window.loadData = async function() {
-  var tbody = document.getElementById("companyList");
+  const tbody = document.getElementById("companyList");
   tbody.innerHTML = "<tr><td colspan=8 class=empty>로딩 중...</td></tr>";
   try {
-    var snap = await get(ref(db, "companies"));
+    const snap = await get(ref(db, "companies"));
     allData = [];
-    if(snap.exists()){
-      snap.forEach(function(c){ allData.push(Object.assign({id:c.key}, c.val())); });
+    if (snap.exists()) {
+      snap.forEach(function(c) { allData.push(Object.assign({id:c.key}, c.val())); });
       allData.reverse();
     }
     renderList(allData);
@@ -162,17 +174,16 @@ window.loadData = async function() {
     tbody.innerHTML = "<tr><td colspan=8 class=empty>오류: " + e.message + "</td></tr>";
   }
 };
-function renderList(data){
-  var tbody = document.getElementById("companyList");
+
+function renderList(data) {
+  const tbody = document.getElementById("companyList");
   document.getElementById("countBadge").textContent = "총 " + data.length + "개";
-  if(!data.length){ tbody.innerHTML = "<tr><td colspan=8 class=empty>등록된 회사가 없습니다</td></tr>"; return; }
-  var rows = [];
-  for(var i=0;i<data.length;i++){
-    var c = data[i];
-    var cid = c.id;
-    var cn = (c.companyName||"-").replace(/"/g,"&quot;");
-    rows.push(
-      "<tr onclick="showDetail('" + cid + "')" style="cursor:pointer">" +
+  if (!data.length) {
+    tbody.innerHTML = "<tr><td colspan=8 class=empty>등록된 회사가 없습니다</td></tr>";
+    return;
+  }
+  const rows = data.map(function(c) {
+    return "<tr class=data-row data-id=" + c.id + ">" +
       "<td><strong>" + (c.companyName||"-") + "</strong></td>" +
       "<td>" + (c.brandName||"-") + "</td>" +
       "<td>" + (c.contactName||"-") + "</td>" +
@@ -180,27 +191,42 @@ function renderList(data){
       "<td>" + (c.email||"-") + "</td>" +
       "<td>" + (c.category||"-") + "</td>" +
       "<td>" + statusBadge(c.status) + "</td>" +
-      "<td onclick="event.stopPropagation()">" +
-      "<button class="btn btn-ghost btn-sm" onclick="editCompany('" + cid + "')">수정</button> " +
-      "<button class="btn btn-ghost btn-sm" onclick="deleteCompany('" + cid + "','"+cn+"')">삭제</button>" +
-      "</td></tr>"
-    );
-  }
+      "<td class=action-cell>" +
+      "<button class=edit-btn data-id=" + c.id + ">수정</button> " +
+      "<button class=del-btn data-id=" + c.id + ">삭제</button>" +
+      "</td></tr>";
+  });
   tbody.innerHTML = rows.join("");
+  tbody.querySelectorAll("tr.data-row").forEach(function(tr) {
+    tr.addEventListener("click", function(e) {
+      if (!e.target.closest(".action-cell")) showDetail(tr.dataset.id);
+    });
+  });
+  tbody.querySelectorAll(".edit-btn").forEach(function(btn) {
+    btn.addEventListener("click", function(e) { e.stopPropagation(); editCompany(btn.dataset.id); });
+    btn.className = "btn btn-ghost btn-sm";
+  });
+  tbody.querySelectorAll(".del-btn").forEach(function(btn) {
+    var c = allData.find(function(x){return x.id===btn.dataset.id;});
+    btn.addEventListener("click", function(e) { e.stopPropagation(); deleteCompany(btn.dataset.id, c ? c.companyName : ""); });
+    btn.className = "btn btn-ghost btn-sm";
+  });
 }
-window.filterList = function(){
-  var q = document.getElementById("searchInput").value.toLowerCase();
-  renderList(allData.filter(function(c){
+
+window.filterList = function() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  renderList(allData.filter(function(c) {
     return (c.companyName||"").toLowerCase().indexOf(q)>-1 ||
            (c.brandName||"").toLowerCase().indexOf(q)>-1 ||
            (c.contactName||"").toLowerCase().indexOf(q)>-1 ||
            (c.email||"").toLowerCase().indexOf(q)>-1;
   }));
 };
-window.saveCompany = async function(){
-  var name = document.getElementById("companyName").value.trim();
-  if(!name){ alert("회사명을 입력해주세요"); return; }
-  var data = {
+
+window.saveCompany = async function() {
+  const name = document.getElementById("companyName").value.trim();
+  if (!name) { alert("회사명을 입력해주세요"); return; }
+  const data = {
     companyName: name,
     brandName: document.getElementById("brandName").value.trim(),
     bizNumber: document.getElementById("bizNumber").value.trim(),
@@ -216,69 +242,77 @@ window.saveCompany = async function(){
     memo: document.getElementById("memo").value.trim(),
     updatedAt: new Date().toISOString()
   };
-  var id = currentEditId || "company-" + Date.now();
-  if(!currentEditId) data.createdAt = new Date().toISOString();
+  const id = currentEditId || "company-" + Date.now();
+  if (!currentEditId) data.createdAt = new Date().toISOString();
   try {
     await set(ref(db, "companies/" + id), data);
     alert(currentEditId ? "수정되었습니다" : "등록되었습니다");
     resetForm();
-    var tabs = document.querySelectorAll(".tab-btn");
-    showTab("list", tabs[0]);
+    showTab("list");
     loadData();
-  } catch(e){ alert("저장 실패: " + e.message); }
+  } catch(e) { alert("저장 실패: " + e.message); }
 };
-window.editCompany = function(id){
-  var c = allData.find(function(x){return x.id===id;});
-  if(!c) return;
+
+window.editCompany = function(id) {
+  const c = allData.find(function(x){return x.id===id;});
+  if (!c) return;
   currentEditId = id;
-  var fields = ["companyName","brandName","bizNumber","category","contactName","contactTitle","phone","email","address","website","status","startDate","memo"];
-  fields.forEach(function(k){ var el=document.getElementById(k); if(el) el.value=c[k]||""; });
+  const flds = ["companyName","brandName","bizNumber","category","contactName","contactTitle","phone","email","address","website","status","startDate","memo"];
+  flds.forEach(function(k) { const el=document.getElementById(k); if(el) el.value=c[k]||""; });
   document.getElementById("status").value = c.status||"활성";
   document.getElementById("formTitle").textContent = "회사 정보 수정";
   document.getElementById("cancelEditBtn").style.display = "";
   closeModal();
-  var tabs = document.querySelectorAll(".tab-btn");
-  tabs[0].classList.remove("active"); tabs[1].classList.add("active");
-  document.getElementById("tab-list").classList.add("hidden");
-  document.getElementById("tab-add").classList.remove("hidden");
+  showTab("add");
 };
-window.deleteCompany = async function(id, name){
-  if(!confirm('"' + name + '"을(를) 삭제하시겠습니까?')) return;
+
+window.cancelEdit = function() { resetForm(); showTab("list"); };
+
+window.deleteCompany = async function(id, name) {
+  if (!confirm('"' + name + '"을(를) 삭제하시겠습니까?')) return;
   try { await remove(ref(db, "companies/" + id)); closeModal(); loadData(); }
-  catch(e){ alert("삭제 실패: " + e.message); }
+  catch(e) { alert("삭제 실패: " + e.message); }
 };
-window.resetForm = function(){
+
+window.resetForm = function() {
   currentEditId = null;
-  var fields = ["companyName","brandName","bizNumber","contactName","contactTitle","phone","email","address","website","memo","startDate"];
-  fields.forEach(function(k){ var el=document.getElementById(k); if(el) el.value=""; });
+  ["companyName","brandName","bizNumber","contactName","contactTitle","phone","email","address","website","memo","startDate"]
+    .forEach(function(k){ const el=document.getElementById(k); if(el) el.value=""; });
   document.getElementById("category").value = "";
   document.getElementById("status").value = "활성";
   document.getElementById("formTitle").textContent = "새 회사 등록";
   document.getElementById("cancelEditBtn").style.display = "none";
 };
-window.showDetail = function(id){
-  var c = allData.find(function(x){return x.id===id;});
-  if(!c) return;
+
+window.showDetail = function(id) {
+  const c = allData.find(function(x){return x.id===id;});
+  if (!c) return;
   document.getElementById("modalTitle").textContent = c.companyName||"회사 상세";
-  var html = "<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">" +
-    "<div><span style="color:var(--text3);font-size:11px">브랜드명</span><div>"+(c.brandName||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">사업자번호</span><div>"+(c.bizNumber||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">카테고리</span><div>"+(c.category||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">거래 상태</span><div>"+statusBadge(c.status)+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">담당자</span><div>"+(c.contactName||"-")+" "+(c.contactTitle?"("+c.contactTitle+")":" ")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">연락처</span><div>"+(c.phone||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">이메일</span><div>"+(c.email||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">홈페이지</span><div>"+(c.website?"<a href=\""+c.website+"\" target=\"_blank\">"+c.website+"</a>":"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">주소</span><div>"+(c.address||"-")+"</div></div>" +
-    "<div><span style="color:var(--text3);font-size:11px">거래시작일</span><div>"+(c.startDate||"-")+"</div></div>" +
-    "</div>";
-  if(c.memo) html += "<div style="margin-top:12px"><span style="color:var(--text3);font-size:11px">메모</span><div style="margin-top:4px;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);font-size:13px">"+c.memo+"</div></div>";
+  const rows = [
+    ["브랜드명", c.brandName||"-"],
+    ["사업자번호", c.bizNumber||"-"],
+    ["카테고리", c.category||"-"],
+    ["거래 상태", statusBadge(c.status)],
+    ["담당자", (c.contactName||"-") + (c.contactTitle?" ("+c.contactTitle+")":"")],
+    ["연락처", c.phone||"-"],
+    ["이메일", c.email||"-"],
+    ["홈페이지", c.website ? '<a href="'+c.website+'" target="_blank">'+c.website+"</a>" : "-"],
+    ["주소", c.address||"-"],
+    ["거래시작일", c.startDate||"-"]
+  ];
+  let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">';
+  rows.forEach(function(r) {
+    html += '<div><span style="color:var(--text3);font-size:11px">'+r[0]+'</span><div>'+r[1]+'</div></div>';
+  });
+  html += "</div>";
+  if (c.memo) html += '<div style="margin-top:12px"><span style="color:var(--text3);font-size:11px">메모</span><div style="margin-top:4px;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);font-size:13px">'+c.memo+"</div></div>";
   document.getElementById("modalContent").innerHTML = html;
   document.getElementById("modalDeleteBtn").onclick = function(){ deleteCompany(id, c.companyName); };
   document.getElementById("modalEditBtn").onclick = function(){ editCompany(id); };
   document.getElementById("detailModal").classList.remove("hidden");
 };
-window.closeModal = function(){ document.getElementById("detailModal").classList.add("hidden"); };
+
+window.closeModal = function() { document.getElementById("detailModal").classList.add("hidden"); };
 document.getElementById("detailModal").addEventListener("click", function(e){ if(e.target===this) closeModal(); });
 loadData();
 </script>
