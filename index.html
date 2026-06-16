@@ -40,7 +40,6 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','M
 .search-input:focus{outline:none;border-color:var(--border2)}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 .badge-green{background:var(--green-bg);color:var(--green-text)}
-.badge-blue{background:var(--blue-bg);color:var(--blue-text)}
 .badge-amber{background:var(--amber-bg);color:var(--amber-text)}
 .badge-red{background:var(--red-bg);color:var(--red-text)}
 .badge-gray{background:var(--surface2);color:var(--text2)}
@@ -54,15 +53,15 @@ textarea.form-input{resize:vertical;min-height:80px}
 </head>
 <body>
 <div class="app">
-  <div class="brand">🏢 ACOC COMPANY INFO</div>
+  <div class="brand">&#127968; ACOC COMPANY INFO</div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('list',this)">📋 회사 목록</button>
-    <button class="tab-btn" onclick="showTab('add',this)">➕ 회사 등록</button>
+    <button class="tab-btn active" onclick="showTab('list',this)">&#128203; 회사 목록</button>
+    <button class="tab-btn" onclick="showTab('add',this)">&#10133; 회사 등록</button>
   </div>
   <div id="tab-list">
     <div class="toolbar">
-      <input type="text" class="search-input" placeholder="🔍 회사명, 브랜드, 담당자 검색..." id="searchInput" oninput="filterList()">
-      <button class="btn btn-outline btn-sm" onclick="loadData()">🔄 새로고침</button>
+      <input type="text" class="search-input" placeholder="&#128269; 회사명, 브랜드, 담당자 검색..." id="searchInput" oninput="filterList()">
+      <button class="btn btn-outline btn-sm" onclick="loadData()">&#128260; 새로고침</button>
       <span id="countBadge" style="font-size:12px;color:var(--text3)"></span>
     </div>
     <div class="db-wrap">
@@ -76,7 +75,7 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div class="card">
       <div class="card-header">
         <div class="card-title" id="formTitle">새 회사 등록</div>
-        <button class="btn btn-ghost btn-sm" onclick="resetForm()" id="cancelEditBtn" style="display:none">✕ 취소</button>
+        <button class="btn btn-ghost btn-sm" onclick="resetForm()" id="cancelEditBtn" style="display:none">&#10005; 취소</button>
       </div>
       <input type="hidden" id="editId">
       <div class="form-row">
@@ -106,18 +105,18 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="form-group"><label class="form-label">메모</label><textarea class="form-input" id="memo" placeholder="특이사항, 계약내용 등"></textarea></div>
       <div style="display:flex;gap:8px;justify-content:flex-end">
         <button class="btn btn-outline" onclick="resetForm()">초기화</button>
-        <button class="btn btn-primary" onclick="saveCompany()">💾 저장</button>
+        <button class="btn btn-primary" onclick="saveCompany()">&#128190; 저장</button>
       </div>
     </div>
   </div>
 </div>
 <div class="modal-overlay hidden" id="detailModal">
   <div class="modal">
-    <div class="modal-header"><div class="modal-title" id="modalTitle">회사 상세정보</div><button class="btn btn-ghost" onclick="closeModal()">✕</button></div>
+    <div class="modal-header"><div class="modal-title" id="modalTitle">회사 상세정보</div><button class="btn btn-ghost" onclick="closeModal()">&#10005;</button></div>
     <div id="modalContent"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:1rem">
-      <button class="btn btn-danger btn-sm" id="modalDeleteBtn">🗑 삭제</button>
-      <button class="btn btn-outline btn-sm" id="modalEditBtn">✏️ 수정</button>
+      <button class="btn btn-danger btn-sm" id="modalDeleteBtn">삭제</button>
+      <button class="btn btn-outline btn-sm" id="modalEditBtn">수정</button>
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">닫기</button>
     </div>
   </div>
@@ -138,90 +137,149 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 let allData = [];
 let currentEditId = null;
+function statusBadge(s){
+  var sc = {활성:"badge-green",협의중:"badge-amber",휴면:"badge-gray",종료:"badge-red"};
+  return '<span class="badge ' + (sc[s]||"badge-gray") + '">' + (s||"-") + "</span>";
+}
 window.showTab = function(tab, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('tab-list').classList.toggle('hidden', tab !== 'list');
-  document.getElementById('tab-add').classList.toggle('hidden', tab !== 'add');
+  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
+  if(btn) btn.classList.add("active");
+  document.getElementById("tab-list").classList.toggle("hidden", tab !== "list");
+  document.getElementById("tab-add").classList.toggle("hidden", tab !== "add");
 };
 window.loadData = async function() {
-  const tbody = document.getElementById('companyList');
-  tbody.innerHTML = '<tr><td colspan="8" class="empty">로딩 중...</td></tr>';
+  var tbody = document.getElementById("companyList");
+  tbody.innerHTML = "<tr><td colspan=8 class=empty>로딩 중...</td></tr>";
   try {
-    const snap = await get(ref(db, 'companies'));
+    var snap = await get(ref(db, "companies"));
     allData = [];
-    if (snap.exists()) {
-      snap.forEach(c => { allData.push({ id: c.key, ...c.val() }); });
+    if(snap.exists()){
+      snap.forEach(function(c){ allData.push(Object.assign({id:c.key}, c.val())); });
       allData.reverse();
     }
     renderList(allData);
   } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">오류: ' + e.message + '</td></tr>';
+    tbody.innerHTML = "<tr><td colspan=8 class=empty>오류: " + e.message + "</td></tr>";
   }
 };
-function renderList(data) {
-  const tbody = document.getElementById('companyList');
-  document.getElementById('countBadge').textContent = '총 ' + data.length + '개';
-  if (!data.length) { tbody.innerHTML = '<tr><td colspan="8" class="empty">등록된 회사가 없습니다</td></tr>'; return; }
-  const sc = { '활성':'badge-green','협의중':'badge-amber','휴면':'badge-gray','종료':'badge-red' };
-  tbody.innerHTML = data.map(c => '<tr onclick="showDetail(''+c.id+'')" style="cursor:pointer"><td><strong>'+(c.companyName||'-')+'</strong></td><td>'+(c.brandName||'-')+'</td><td>'+(c.contactName||'-')+'</td><td>'+(c.phone||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.category||'-')+'</td><td><span class="badge '+(sc[c.status]||'badge-gray')+'">'+(c.status||'-')+'</span></td><td onclick="event.stopPropagation()"><button class="btn btn-ghost btn-sm" onclick="editCompany(''+c.id+'')">✏️</button><button class="btn btn-ghost btn-sm" onclick="deleteCompany(''+c.id+'',''+c.companyName+'')">🗑</button></td></tr>').join('');
+function renderList(data){
+  var tbody = document.getElementById("companyList");
+  document.getElementById("countBadge").textContent = "총 " + data.length + "개";
+  if(!data.length){ tbody.innerHTML = "<tr><td colspan=8 class=empty>등록된 회사가 없습니다</td></tr>"; return; }
+  var rows = [];
+  for(var i=0;i<data.length;i++){
+    var c = data[i];
+    var cid = c.id;
+    var cn = (c.companyName||"-").replace(/"/g,"&quot;");
+    rows.push(
+      "<tr onclick="showDetail('" + cid + "')" style="cursor:pointer">" +
+      "<td><strong>" + (c.companyName||"-") + "</strong></td>" +
+      "<td>" + (c.brandName||"-") + "</td>" +
+      "<td>" + (c.contactName||"-") + "</td>" +
+      "<td>" + (c.phone||"-") + "</td>" +
+      "<td>" + (c.email||"-") + "</td>" +
+      "<td>" + (c.category||"-") + "</td>" +
+      "<td>" + statusBadge(c.status) + "</td>" +
+      "<td onclick="event.stopPropagation()">" +
+      "<button class="btn btn-ghost btn-sm" onclick="editCompany('" + cid + "')">수정</button> " +
+      "<button class="btn btn-ghost btn-sm" onclick="deleteCompany('" + cid + "','"+cn+"')">삭제</button>" +
+      "</td></tr>"
+    );
+  }
+  tbody.innerHTML = rows.join("");
 }
-window.filterList = function() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  renderList(allData.filter(c => (c.companyName||'').toLowerCase().includes(q)||(c.brandName||'').toLowerCase().includes(q)||(c.contactName||'').toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q)));
+window.filterList = function(){
+  var q = document.getElementById("searchInput").value.toLowerCase();
+  renderList(allData.filter(function(c){
+    return (c.companyName||"").toLowerCase().indexOf(q)>-1 ||
+           (c.brandName||"").toLowerCase().indexOf(q)>-1 ||
+           (c.contactName||"").toLowerCase().indexOf(q)>-1 ||
+           (c.email||"").toLowerCase().indexOf(q)>-1;
+  }));
 };
-window.saveCompany = async function() {
-  const name = document.getElementById('companyName').value.trim();
-  if (!name) { alert('회사명을 입력해주세요'); return; }
-  const data = { companyName:name, brandName:document.getElementById('brandName').value.trim(), bizNumber:document.getElementById('bizNumber').value.trim(), category:document.getElementById('category').value, contactName:document.getElementById('contactName').value.trim(), contactTitle:document.getElementById('contactTitle').value.trim(), phone:document.getElementById('phone').value.trim(), email:document.getElementById('email').value.trim(), address:document.getElementById('address').value.trim(), website:document.getElementById('website').value.trim(), status:document.getElementById('status').value, startDate:document.getElementById('startDate').value, memo:document.getElementById('memo').value.trim(), updatedAt:new Date().toISOString() };
-  const id = currentEditId || 'company-' + Date.now();
-  if (!currentEditId) data.createdAt = new Date().toISOString();
+window.saveCompany = async function(){
+  var name = document.getElementById("companyName").value.trim();
+  if(!name){ alert("회사명을 입력해주세요"); return; }
+  var data = {
+    companyName: name,
+    brandName: document.getElementById("brandName").value.trim(),
+    bizNumber: document.getElementById("bizNumber").value.trim(),
+    category: document.getElementById("category").value,
+    contactName: document.getElementById("contactName").value.trim(),
+    contactTitle: document.getElementById("contactTitle").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    address: document.getElementById("address").value.trim(),
+    website: document.getElementById("website").value.trim(),
+    status: document.getElementById("status").value,
+    startDate: document.getElementById("startDate").value,
+    memo: document.getElementById("memo").value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  var id = currentEditId || "company-" + Date.now();
+  if(!currentEditId) data.createdAt = new Date().toISOString();
   try {
-    await set(ref(db, 'companies/' + id), data);
-    alert(currentEditId ? '수정되었습니다' : '등록되었습니다');
+    await set(ref(db, "companies/" + id), data);
+    alert(currentEditId ? "수정되었습니다" : "등록되었습니다");
     resetForm();
-    showTab('list', document.querySelector('.tab-btn'));
+    var tabs = document.querySelectorAll(".tab-btn");
+    showTab("list", tabs[0]);
     loadData();
-  } catch(e) { alert('저장 실패: ' + e.message); }
+  } catch(e){ alert("저장 실패: " + e.message); }
 };
-window.editCompany = function(id) {
-  const c = allData.find(x => x.id === id);
-  if (!c) return;
+window.editCompany = function(id){
+  var c = allData.find(function(x){return x.id===id;});
+  if(!c) return;
   currentEditId = id;
-  ['companyName','brandName','bizNumber','category','contactName','contactTitle','phone','email','address','website','status','startDate','memo'].forEach(k => { const el=document.getElementById(k); if(el) el.value = c[k]||''; });
-  document.getElementById('status').value = c.status||'활성';
-  document.getElementById('formTitle').textContent = '회사 정보 수정';
-  document.getElementById('cancelEditBtn').style.display = '';
+  var fields = ["companyName","brandName","bizNumber","category","contactName","contactTitle","phone","email","address","website","status","startDate","memo"];
+  fields.forEach(function(k){ var el=document.getElementById(k); if(el) el.value=c[k]||""; });
+  document.getElementById("status").value = c.status||"활성";
+  document.getElementById("formTitle").textContent = "회사 정보 수정";
+  document.getElementById("cancelEditBtn").style.display = "";
   closeModal();
-  const tabs = document.querySelectorAll('.tab-btn');
-  tabs[0].classList.remove('active'); tabs[1].classList.add('active');
-  document.getElementById('tab-list').classList.add('hidden');
-  document.getElementById('tab-add').classList.remove('hidden');
+  var tabs = document.querySelectorAll(".tab-btn");
+  tabs[0].classList.remove("active"); tabs[1].classList.add("active");
+  document.getElementById("tab-list").classList.add("hidden");
+  document.getElementById("tab-add").classList.remove("hidden");
 };
-window.deleteCompany = async function(id, name) {
-  if (!confirm('"' + name + '"을(를) 삭제하시겠습니까?')) return;
-  try { await remove(ref(db, 'companies/' + id)); closeModal(); loadData(); } catch(e) { alert('삭제 실패: ' + e.message); }
+window.deleteCompany = async function(id, name){
+  if(!confirm('"' + name + '"을(를) 삭제하시겠습니까?')) return;
+  try { await remove(ref(db, "companies/" + id)); closeModal(); loadData(); }
+  catch(e){ alert("삭제 실패: " + e.message); }
 };
-window.resetForm = function() {
+window.resetForm = function(){
   currentEditId = null;
-  ['companyName','brandName','bizNumber','contactName','contactTitle','phone','email','address','website','memo','startDate'].forEach(k => { const el=document.getElementById(k); if(el) el.value=''; });
-  document.getElementById('category').value = '';
-  document.getElementById('status').value = '활성';
-  document.getElementById('formTitle').textContent = '새 회사 등록';
-  document.getElementById('cancelEditBtn').style.display = 'none';
+  var fields = ["companyName","brandName","bizNumber","contactName","contactTitle","phone","email","address","website","memo","startDate"];
+  fields.forEach(function(k){ var el=document.getElementById(k); if(el) el.value=""; });
+  document.getElementById("category").value = "";
+  document.getElementById("status").value = "활성";
+  document.getElementById("formTitle").textContent = "새 회사 등록";
+  document.getElementById("cancelEditBtn").style.display = "none";
 };
-window.showDetail = function(id) {
-  const c = allData.find(x => x.id === id);
-  if (!c) return;
-  const sc = { '활성':'badge-green','협의중':'badge-amber','휴면':'badge-gray','종료':'badge-red' };
-  document.getElementById('modalTitle').textContent = c.companyName || '회사 상세';
-  document.getElementById('modalContent').innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px"><div><span style="color:var(--text3);font-size:11px">브랜드명</span><div>'+(c.brandName||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">사업자번호</span><div>'+(c.bizNumber||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">카테고리</span><div>'+(c.category||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">거래 상태</span><div><span class="badge '+(sc[c.status]||'badge-gray')+'">'+(c.status||'-')+'</span></div></div><div><span style="color:var(--text3);font-size:11px">담당자</span><div>'+(c.contactName||'-')+' '+(c.contactTitle?'('+c.contactTitle+')':'')+'</div></div><div><span style="color:var(--text3);font-size:11px">연락처</span><div>'+(c.phone||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">이메일</span><div>'+(c.email||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">홈페이지</span><div>'+(c.website?'<a href="'+c.website+'" target="_blank">'+c.website+'</a>':'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">주소</span><div>'+(c.address||'-')+'</div></div><div><span style="color:var(--text3);font-size:11px">거래시작일</span><div>'+(c.startDate||'-')+'</div></div></div>'+(c.memo?'<div style="margin-top:12px"><span style="color:var(--text3);font-size:11px">메모</span><div style="margin-top:4px;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);font-size:13px">'+c.memo+'</div></div>':'');
-  document.getElementById('modalDeleteBtn').onclick = () => deleteCompany(id, c.companyName);
-  document.getElementById('modalEditBtn').onclick = () => editCompany(id);
-  document.getElementById('detailModal').classList.remove('hidden');
+window.showDetail = function(id){
+  var c = allData.find(function(x){return x.id===id;});
+  if(!c) return;
+  document.getElementById("modalTitle").textContent = c.companyName||"회사 상세";
+  var html = "<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">" +
+    "<div><span style="color:var(--text3);font-size:11px">브랜드명</span><div>"+(c.brandName||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">사업자번호</span><div>"+(c.bizNumber||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">카테고리</span><div>"+(c.category||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">거래 상태</span><div>"+statusBadge(c.status)+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">담당자</span><div>"+(c.contactName||"-")+" "+(c.contactTitle?"("+c.contactTitle+")":" ")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">연락처</span><div>"+(c.phone||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">이메일</span><div>"+(c.email||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">홈페이지</span><div>"+(c.website?"<a href=\""+c.website+"\" target=\"_blank\">"+c.website+"</a>":"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">주소</span><div>"+(c.address||"-")+"</div></div>" +
+    "<div><span style="color:var(--text3);font-size:11px">거래시작일</span><div>"+(c.startDate||"-")+"</div></div>" +
+    "</div>";
+  if(c.memo) html += "<div style="margin-top:12px"><span style="color:var(--text3);font-size:11px">메모</span><div style="margin-top:4px;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);font-size:13px">"+c.memo+"</div></div>";
+  document.getElementById("modalContent").innerHTML = html;
+  document.getElementById("modalDeleteBtn").onclick = function(){ deleteCompany(id, c.companyName); };
+  document.getElementById("modalEditBtn").onclick = function(){ editCompany(id); };
+  document.getElementById("detailModal").classList.remove("hidden");
 };
-window.closeModal = function() { document.getElementById('detailModal').classList.add('hidden'); };
-document.getElementById('detailModal').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
+window.closeModal = function(){ document.getElementById("detailModal").classList.add("hidden"); };
+document.getElementById("detailModal").addEventListener("click", function(e){ if(e.target===this) closeModal(); });
 loadData();
 </script>
 </body>
